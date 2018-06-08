@@ -252,6 +252,11 @@
           "type": "string",
           "example": "ord001"
         },
+        "status": {
+          "type": "string",
+          "enum": ["active", "completed"],
+          "example": "active"
+        },
         "type": {
           "type": "string",
           "enum": ["product", "service", "support"],

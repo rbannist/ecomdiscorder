@@ -1,7 +1,7 @@
 //
 // Routing controllers for the order API
 // ----------------------------------------------
-// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018), June 2018
+// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018)
 //
 
 const express = require('express');
@@ -9,22 +9,49 @@ const routes = express.Router();
 const utils = require('../lib/utils');
 
 //
+// GET orders - return array of orders; with status filter (active and completed)
+//
+routes
+.get('/api/orders/status/:status', function (req, res, next) {
+  res.type('application/json');
+  let status = req.params.status;
+  let active = "active";
+  let completed = "completed";
+  
+  switch(status) {
+    case 'active': 
+        res.app.get('data').queryOrders({$and: [{status: active}]})
+        .then(data => utils.sendData(res, data))
+        .catch(err => utils.sendError(res, err));
+      break;
+    case 'completed': 
+        res.app.get('data').queryOrders({status: completed})
+        .then(data => utils.sendData(res, data))
+        .catch(err => utils.sendError(res, err));
+      break;
+    default:
+      // If status not valid
+      utils.sendError(res, {msg:'Error. Supplied status not valid, must be one of: [active or completed]'}, 400);   
+  }
+})
+
+//
 // GET orders - return array of orders; with time range filter (today and past)
 //
 routes
-.get('/api/orders/filter/:time', function (req, res, next) {
+.get('/api/orders/time/:time', function (req, res, next) {
   res.type('application/json');
   let time = req.params.time;
   let today = new Date().toISOString().substring(0, 10);
   
   switch(time) {
     case 'today': 
-      res.app.get('data').queryOrders({$and: [{date: {$gte: today}}]})
+      res.app.get('data').queryOrders({$and: [{date: today}]})
         .then(data => utils.sendData(res, data))
         .catch(err => utils.sendError(res, err));
       break;
     case 'past': 
-      res.app.get('data').queryOrders({end: {$lt: today}})
+      res.app.get('data').queryOrders({date: {$lt: today}})
         .then(data => utils.sendData(res, data))
         .catch(err => utils.sendError(res, err));
       break;

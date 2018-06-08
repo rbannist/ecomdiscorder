@@ -1,7 +1,7 @@
 //
 // Data access layer, does all MongoDB operations
 // ----------------------------------------------
-// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018), June 2018
+// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018)
 //
 
 const utils = require('./utils');

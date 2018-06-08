@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.2",
     "title": "Order API",
     "description": "REST API for data access tier of the E-Commerce App",
     "contact": {
@@ -30,11 +30,11 @@
     }
   },
   "paths": {
-    "/orders/filter/{time}": {
+    "/orders/time/{time}": {
       "get": {
         "tags": ["Orders"],
         "description": "Returns orders filtered to a given time frame",
-        "operationId": "getFilteredOrders",
+        "operationId": "getFilteredOrdersTime",
         "produces": [
           "application/json"
         ],
@@ -61,10 +61,41 @@
         }
       }        
     },
+    "/orders/status/{status}": {
+      "get": {
+        "tags": ["Orders"],
+        "description": "Returns orders filtered on active or completed status",
+        "operationId": "getFilteredOrdersStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Active or Completed Orders",
+            "required": true,
+            "type": "string",
+            "enum": ["active", "completed"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of orders",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }            
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      }        
+    },
     "/orders": {
       "get": {
         "tags": ["Orders"],
-        "description": "Returns **all** orders from the system",
+        "description": "Returns all orders from the system",
         "operationId": "getAllOrders",
         "produces": [
           "application/json"

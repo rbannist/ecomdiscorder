@@ -1,7 +1,7 @@
 //
 // Simple utils class with static helper functions
 // -----------------------------------------------
-// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018), June 2018
+// Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018)
 //
 
 class Utils {

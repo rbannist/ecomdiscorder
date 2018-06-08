@@ -1,0 +1,263 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Order API",
+    "description": "REST API for data access tier of the E-Commerce App",
+    "contact": {
+      "name": "Richard Bannister, June 2018 (Original Author = Ben Colemen, March 2018)"
+    },
+    "license": {
+      "name": "Apache 2.0"
+    }
+  },
+  "basePath": "/api",
+  "schemes": [
+    "http", 
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "X-Secret": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-SECRET"
+    }
+  },
+  "paths": {
+    "/orders/filter/{time}": {
+      "get": {
+        "tags": ["Orders"],
+        "description": "Returns orders filtered to a given time frame",
+        "operationId": "getFilteredOrders",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "time",
+            "in": "path",
+            "description": "Time frame to get orders for (today or past)",
+            "required": true,
+            "type": "string",
+            "enum": ["today", "past"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of orders",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }            
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      }        
+    },
+    "/orders": {
+      "get": {
+        "tags": ["Orders"],
+        "description": "Returns **all** orders from the system",
+        "operationId": "getAllOrders",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of orders",
+            "schema": {
+              "$ref": "#/definitions/Orders"
+            }
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Orders"],
+        "description": "Create a new order",
+        "operationId": "createOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Order object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }            
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newly created order"
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Orders"],
+        "description": "Update an existing order",
+        "operationId": "updateOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Order object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }            
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated order"
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      } 
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": ["Orders"],
+        "description": "Returns single order with given id",
+        "operationId": "getOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the order, e.g. ord001",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single order object",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Orders"],
+        "description": "Delete an order",
+        "operationId": "deleteOrder",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the order, e.g. ord001",
+            "required": true,
+            "type": "string"            
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Confirmation message"
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      }     
+    },
+    "/info": {
+      "get": {
+        "tags": ["Other"],
+        "description": "Get system information, useful for debugging",
+        "operationId": "systemInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "System info object",
+            "schema": {
+              "$ref": "#/definitions/SystemInfo"
+            }
+          },
+          "400": {
+            "description": "Unexpected error"
+          }
+        }
+      }     
+    }   
+  },
+  "definitions": {
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "ord001"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["product", "service", "support"],
+          "example": "product"
+        },
+        "date": {
+          "type": "string",
+          "example": "2018-06-07"
+        },
+        "products": {
+          "type": "array",
+          "example": [
+            {"id": 1001, "desc": "Loaf of bread"}
+          ]
+        }
+      }
+    },
+    "Orders": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Order"
+      }
+    },    
+    "SystemInfo": {
+      "type": "object",
+      "properties": {
+        "hostname":  { "type": "string",  "example": "myhost001" },
+        "container": { "type": "boolean", "example": true },
+        "osType":    { "type": "string",  "example": "Linux" },
+        "osRelease": { "type": "string",  "example": "4.4.0-43-Microsoft" },
+        "arch":      { "type": "string",  "example": "x64" },
+        "cpuModel":  { "type": "string",  "example": "Intel(R) Core(TM) i7-6600U CPU @ 2.60GHz" },
+        "cpuCount":  { "type": "integer", "example": 4 },
+        "memory":    { "type": "integer", "example": 16310 },
+        "nodeVer":   { "type": "string",  "example": "v8.9.3" },
+        "cosmosDb":  { "type": "string",  "example": "https://localhost:8081/dbs/ecomdiscorder/colls/alldata" }
+      }
+    }    
+  }
+}

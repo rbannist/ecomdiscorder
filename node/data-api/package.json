@@ -1,0 +1,36 @@
+{
+  "name": "ecomdisc-dataapi",
+  "version": "2.1.1",
+  "main": "server.js",
+  "engines": {
+    "node": "^8.9.3"
+  },
+  "description": "Main microservice, REST data API",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbannist/ecomdiscorder.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "jsotp": "^1.0.2",
+    "mongodb": "~2.2.0",
+    "morgan": "^1.9.0",
+    "swagger-ui-express": "^2.0.11"
+  },
+  "bugs": {
+    "url": "https://github.com/rbannist/ecomdiscorder/issues"
+  },
+  "homepage": "https://github.com/rbannist/ecomdiscorder#readme",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "author": ""
+}
